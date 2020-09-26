@@ -9,7 +9,7 @@ public class Main
     public static final HorizontalParabola HP1 = new HorizontalParabola(3, -1, 0.125);
     public static final BigSquare BS1= new BigSquare (-2, -5, 6, 4);
     public static final SmallSquare SS1 = new SmallSquare(2, 2, 7, 7);
-    public static final  BigParabola BP1 = new BigParabola(-3, -3 , 0.5);
+    public static final BigParabola BP1 = new BigParabola(-3, -3 , 0.5);
     public static final SmallParabola SP1 = new SmallParabola(-3, 0, 1);
 
     public static void main(String[] args)
@@ -21,23 +21,8 @@ public class Main
             printColorForPoint(examplesX(i), examplesY(i));
         }
 
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Input X: ");
-        double x = sc.nextDouble();
-        if ((x < -10) || (x > 10))
-        {
-            System.out.println("-10 < x < 10");
-            System.exit(1);
-        }
-
-        System.out.print("Input Y: ");
-        double y = sc.nextDouble();
-        if ((y < -10) || (y > 10))
-        {
-            System.out.println("-10 < y < 10");
-            System.exit(1);
-        }
+        double x = handleIn('X');
+        double y = handleIn('Y');
 
         printColorForPoint(x, y);
     }
@@ -54,50 +39,72 @@ public class Main
         return yExamples[i];
     }
 
-    public static void printColorForPoint (double x, double y)
+    static void printColorForPoint (double x, double y)
     {
         System.out.printf("(%.3f ; %.3f) -> %s \n", x, y, getColor(x, y));
     }
 
-    public static SimpleColor getColor (double x, double y)
+    static double handleIn(char coordName)
     {
-        if (SP1.isPointHigherSmallParabola(x, y) && !BS1.isPointInBigSquare(x, y))
-            return SimpleColor.ORANGE;
+        System.out.printf("Input %c: ", coordName);
+        Scanner sc = new Scanner(System.in);
+        return sc.nextDouble();
+    }
 
-        if (SP1.isPointHigherSmallParabola(x, y) && BS1.isPointInBigSquare(x, y))
-            return SimpleColor.GREEN;
+    static SimpleColor getColor (double x, double y)
+    {
+        if (isColorOrange(x, y)) return SimpleColor.ORANGE;
 
-        if (BP1.isPointHigherBigParabola(x, y) && BS1.isPointInBigSquare(x, y)
-            && !SP1.isPointHigherSmallParabola(x, y))
-            return SimpleColor.WHITE;
+        if (isColorWhite(x, y)) return SimpleColor.WHITE;
 
-        if (BP1.isPointHigherBigParabola(x, y) && !SP1.isPointHigherSmallParabola(x, y)
-            && !BS1.isPointInBigSquare(x, y) && (x <= -2))
-            return SimpleColor.BLUE;
+        if (isColorBlue(x, y)) return SimpleColor.BLUE;
 
-        if (BP1.isPointHigherBigParabola(x, y) && !SP1.isPointHigherSmallParabola(x, y)
-            && !BS1.isPointInBigSquare(x, y) && (x > -2))
-            return SimpleColor.YELLOW;
+        if (isColorYellow(x, y)) return SimpleColor.YELLOW;
 
-        if (BS1.isPointInBigSquare(x, y) && !BP1.isPointHigherBigParabola(x, y)
-            && !SS1.isPointInSmallSquare(x, y))
-            return SimpleColor.GRAY;
-
-        if (SS1.isPointInSmallSquare(x, y) && !HP1.isPointRightOfParabola(x, y)
-            && !BS1.isPointInBigSquare(x, y))
-            return SimpleColor.BLUE;
-
-        if (SS1.isPointInSmallSquare(x, y) && !HP1.isPointRightOfParabola(x, y)
-                && BS1.isPointInBigSquare(x, y))
-            return SimpleColor.YELLOW;
-
-        if (SS1.isPointInSmallSquare(x, y) && HP1.isPointRightOfParabola(x, y))
-            return SimpleColor.WHITE;
-
-        if (HP1.isPointRightOfParabola(x, y) && !BS1.isPointInBigSquare(x, y)
-            && !SS1.isPointInSmallSquare(x, y))
-            return SimpleColor.ORANGE;
+        if (isColorGray(x, y)) return SimpleColor.GRAY;
 
         return SimpleColor.GREEN;
     }
+
+    static boolean isColorOrange (double x, double y)
+    {
+        return (SP1.isPointHigherSmallParabola(x, y) && !BS1.isPointInBigSquare(x, y))
+
+                || (HP1.isPointRightOfParabola(x, y) && !BS1.isPointInBigSquare(x, y)
+                && !SS1.isPointInSmallSquare(x, y));
+    }
+
+    static boolean isColorWhite (double x, double y)
+    {
+        return (BP1.isPointHigherBigParabola(x, y) && BS1.isPointInBigSquare(x, y) &&
+               !SP1.isPointHigherSmallParabola(x, y))
+
+                || (SS1.isPointInSmallSquare(x, y) && HP1.isPointRightOfParabola(x, y));
+
+    }
+
+    static boolean isColorBlue (double x, double y)
+    {
+        return (BP1.isPointHigherBigParabola(x, y) && !SP1.isPointHigherSmallParabola(x, y)
+                && !BS1.isPointInBigSquare(x, y) && (x <= -2))
+
+                || (SS1.isPointInSmallSquare(x, y) && !HP1.isPointRightOfParabola(x, y)
+                && !BS1.isPointInBigSquare(x, y));
+    }
+
+    static boolean isColorYellow (double x, double y)
+    {
+        return (BP1.isPointHigherBigParabola(x, y) && !SP1.isPointHigherSmallParabola(x, y)
+                && !BS1.isPointInBigSquare(x, y) && (x > -2))
+
+                || (SS1.isPointInSmallSquare(x, y) && !HP1.isPointRightOfParabola(x, y)
+                && BS1.isPointInBigSquare(x, y));
+    }
+
+    static boolean isColorGray (double x, double y)
+    {
+        return (BS1.isPointInBigSquare(x, y) && !BP1.isPointHigherBigParabola(x, y)
+                && !SS1.isPointInSmallSquare(x, y));
+    }
+
 }
