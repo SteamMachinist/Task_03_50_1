@@ -1,39 +1,35 @@
 package ru.vsu.cs.roschupkin_ya_a;
 
-
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Main
 {
-    public static final HorizontalParabola HP1 = new HorizontalParabola(3, -1, 0.125);
-    public static final BigSquare BS1= new BigSquare (-2, -5, 6, 4);
-    public static final SmallSquare SS1 = new SmallSquare(2, 2, 7, 7);
-    public static final BigParabola BP1 = new BigParabola(-3, -3 , 0.5);
-    public static final SmallParabola SP1 = new SmallParabola(-3, 0, 1);
 
     public static void main(String[] args)
     {
         Locale.setDefault(Locale.ROOT);
 
-        for (int i = 0; i < 11; i++)
-        {
-            printColorForPoint(examplesX(i), examplesY(i));
-        }
+        printExamples();
 
-        double x = handleIn('X');
-        double y = handleIn('Y');
-
-        printColorForPoint(x, y);
+        printColorForPoint(readCoordinate('X'), readCoordinate('Y'));
     }
 
-    static double examplesX(int i)
+    static void printExamples()
+    {
+        for (int i = 0; i < 11; i++)
+        {
+            printColorForPoint(readExamplesX(i), readExamplesY(i));
+        }
+    }
+
+    static double readExamplesX(int i)
     {
         double [] xExamples = {0, 8, 3, 4, 6, -1, -3, -1.5 ,0, -3, -9};
         return xExamples[i];
     }
 
-    static double examplesY(int i)
+    static double readExamplesY(int i)
     {
         double [] yExamples = {0, 1, 3, 6, 3, 1, -1, 3.5 ,5, 2, -9};
         return yExamples[i];
@@ -44,9 +40,9 @@ public class Main
         System.out.printf("(%.3f ; %.3f) -> %s \n", x, y, getColor(x, y));
     }
 
-    static double handleIn(char coordName)
+    static double readCoordinate(char coordinateName)
     {
-        System.out.printf("Input %c: ", coordName);
+        System.out.printf("Input %c: ", coordinateName);
         Scanner sc = new Scanner(System.in);
         return sc.nextDouble();
     }
@@ -65,6 +61,12 @@ public class Main
 
         return SimpleColor.GREEN;
     }
+
+    public static final HorizontalParabola HP1 = new HorizontalParabola(3, -1, 0.125);
+    public static final BigSquare BS1= new BigSquare (-2, -5, 6, 4);
+    public static final SmallSquare SS1 = new SmallSquare(2, 2, 7, 7);
+    public static final BigParabola BP1 = new BigParabola(-3, -3 , 0.5);
+    public static final SmallParabola SP1 = new SmallParabola(-3, 0, 1);
 
     static boolean isColorOrange (double x, double y)
     {
@@ -106,5 +108,4 @@ public class Main
         return (BS1.isPointInBigSquare(x, y) && !BP1.isPointHigherBigParabola(x, y)
                 && !SS1.isPointInSmallSquare(x, y));
     }
-
 }
