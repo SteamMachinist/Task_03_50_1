@@ -12,14 +12,17 @@ public class Main
 
         printExamples();
 
-        printColorForPoint(readCoordinate('X'), readCoordinate('Y'));
+        double x = readCoordinate('X');
+        double y = readCoordinate('Y');
+        printColorForPoint(x, y, getColor(x, y));
     }
 
     static void printExamples()
     {
         for (int i = 0; i < 11; i++)
         {
-            printColorForPoint(readExamplesX(i), readExamplesY(i));
+            printColorForPoint(readExamplesX(i), readExamplesY(i),
+                    getColor(readExamplesX(i), readExamplesY(i)));
         }
     }
 
@@ -35,9 +38,9 @@ public class Main
         return yExamples[i];
     }
 
-    static void printColorForPoint (double x, double y)
+    static void printColorForPoint (double x, double y, SimpleColor areaColor)
     {
-        System.out.printf("(%.3f ; %.3f) -> %s \n", x, y, getColor(x, y));
+        System.out.printf("(%.3f ; %.3f) -> %s \n", x, y, areaColor);
     }
 
     static double readCoordinate(char coordinateName)
@@ -62,50 +65,50 @@ public class Main
         return SimpleColor.GREEN;
     }
 
-    public static final HorizontalParabola HP1 = new HorizontalParabola(3, -1, 0.125);
-    public static final BigSquare BS1= new BigSquare (-2, -5, 6, 4);
-    public static final SmallSquare SS1 = new SmallSquare(2, 2, 7, 7);
-    public static final BigParabola BP1 = new BigParabola(-3, -3 , 0.5);
-    public static final SmallParabola SP1 = new SmallParabola(-3, 0, 1);
+    public static final HorizontalParabola horizontalParabola = new HorizontalParabola(3, -1, 0.125);
+    public static final BigSquare bigSquare = new BigSquare (-2, -5, 6, 4);
+    public static final SmallSquare smallSquare = new SmallSquare(2, 2, 7, 7);
+    public static final BigParabola bigParabola = new BigParabola(-3, -3 , 0.5);
+    public static final SmallParabola smallParabola = new SmallParabola(-3, 0, 1);
 
     static boolean isColorOrange (double x, double y)
     {
-        return (SP1.isPointHigherSmallParabola(x, y) && !BS1.isPointInBigSquare(x, y))
+        return (smallParabola.isPointHigherSmallParabola(x, y) && !bigSquare.isPointInBigSquare(x, y))
 
-                || (HP1.isPointRightOfParabola(x, y) && !BS1.isPointInBigSquare(x, y)
-                && !SS1.isPointInSmallSquare(x, y));
+                || (horizontalParabola.isPointRightOfParabola(x, y) && !bigSquare.isPointInBigSquare(x, y)
+                && !smallSquare.isPointInSmallSquare(x, y));
     }
 
     static boolean isColorWhite (double x, double y)
     {
-        return (BP1.isPointHigherBigParabola(x, y) && BS1.isPointInBigSquare(x, y) &&
-               !SP1.isPointHigherSmallParabola(x, y))
+        return (bigParabola.isPointHigherBigParabola(x, y) && bigSquare.isPointInBigSquare(x, y) &&
+               !smallParabola.isPointHigherSmallParabola(x, y))
 
-                || (SS1.isPointInSmallSquare(x, y) && HP1.isPointRightOfParabola(x, y));
+                || (smallSquare.isPointInSmallSquare(x, y) && horizontalParabola.isPointRightOfParabola(x, y));
 
     }
 
     static boolean isColorBlue (double x, double y)
     {
-        return (BP1.isPointHigherBigParabola(x, y) && !SP1.isPointHigherSmallParabola(x, y)
-                && !BS1.isPointInBigSquare(x, y) && (x <= -2))
+        return (bigParabola.isPointHigherBigParabola(x, y) && !smallParabola.isPointHigherSmallParabola(x, y)
+                && !bigSquare.isPointInBigSquare(x, y) && (x <= -2))
 
-                || (SS1.isPointInSmallSquare(x, y) && !HP1.isPointRightOfParabola(x, y)
-                && !BS1.isPointInBigSquare(x, y));
+                || (smallSquare.isPointInSmallSquare(x, y) && !horizontalParabola.isPointRightOfParabola(x, y)
+                && !bigSquare.isPointInBigSquare(x, y));
     }
 
     static boolean isColorYellow (double x, double y)
     {
-        return (BP1.isPointHigherBigParabola(x, y) && !SP1.isPointHigherSmallParabola(x, y)
-                && !BS1.isPointInBigSquare(x, y) && (x > -2))
+        return (bigParabola.isPointHigherBigParabola(x, y) && !smallParabola.isPointHigherSmallParabola(x, y)
+                && !bigSquare.isPointInBigSquare(x, y) && (x > -2))
 
-                || (SS1.isPointInSmallSquare(x, y) && !HP1.isPointRightOfParabola(x, y)
-                && BS1.isPointInBigSquare(x, y));
+                || (smallSquare.isPointInSmallSquare(x, y) && !horizontalParabola.isPointRightOfParabola(x, y)
+                && bigSquare.isPointInBigSquare(x, y));
     }
 
     static boolean isColorGray (double x, double y)
     {
-        return (BS1.isPointInBigSquare(x, y) && !BP1.isPointHigherBigParabola(x, y)
-                && !SS1.isPointInSmallSquare(x, y));
+        return (bigSquare.isPointInBigSquare(x, y) && !bigParabola.isPointHigherBigParabola(x, y)
+                && !smallSquare.isPointInSmallSquare(x, y));
     }
 }
