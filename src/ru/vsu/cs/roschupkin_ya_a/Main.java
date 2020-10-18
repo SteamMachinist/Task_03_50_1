@@ -9,84 +9,87 @@ public class Main {
     {
         Locale.setDefault(Locale.ROOT);
 
-        for (int i = 0; i < 11; i++)
-        {
-            printColorForPoint(examplesX(i), examplesY(i));
-        }
+        Point SMALL_SQUARE_SMALLEST_POINT = new Point(2, 2);
+        Point SMALL_SQUARE_BIGGEST_POINT  = new Point(7, 7);
 
+        Point BIG_SQUARE_SMALLEST_POINT = new Point(-2, -5);
+        Point BIG_SQUARE_BIGGEST_POINT  = new Point(6, 4);
+
+        Point  SMALL_PARABOLA_APEX = new Point(-3, 0);
+        double SMALL_PARABOLA_QUADRATIC_COEFFICIENT = 1;
+        String SMALL_PARABOLA_TYPE = "VERTICAL";
+
+        Point  BIG_PARABOLA_APEX = new Point(-3, -3);
+        double BIG_PARABOLA_QUADRATIC_COEFFICIENT = 0.5;
+        String BIG_PARABOLA_TYPE = "VERTICAL";
+
+        Point  HORIZONTAL_PARABOLA_APEX = new Point(3, -1);
+        double HORIZONTAL_PARABOLA_QUADRATIC_COEFFICIENT = 0.125;
+        String HORIZONTAL_PARABOLA_TYPE = "HORIZONTAL";
+
+
+        Picture picture = new Picture(
+            new Square(SMALL_SQUARE_SMALLEST_POINT, SMALL_SQUARE_BIGGEST_POINT),
+
+            new Square(BIG_SQUARE_SMALLEST_POINT, BIG_SQUARE_BIGGEST_POINT),
+
+            new Parabola(SMALL_PARABOLA_APEX,
+                    SMALL_PARABOLA_QUADRATIC_COEFFICIENT, SMALL_PARABOLA_TYPE),
+
+            new Parabola(BIG_PARABOLA_APEX,
+                    BIG_PARABOLA_QUADRATIC_COEFFICIENT, BIG_PARABOLA_TYPE),
+
+            new Parabola(HORIZONTAL_PARABOLA_APEX,
+                    HORIZONTAL_PARABOLA_QUADRATIC_COEFFICIENT, HORIZONTAL_PARABOLA_TYPE)
+        );
+
+        runTests(picture);
+
+        Point point = new Point(readCoordinate('X'), readCoordinate('Y'));
+        printColorForPoint(point, picture.getColor(point));
+    }
+
+    static void runTests(Picture picture)
+    {
+        for(TestPoints testPoint : TestPoints.values())
+        {
+            SimpleColor colorForTestPoint = picture.getColor(testPoint.point);
+
+            printColorForPoint(testPoint.point, colorForTestPoint);
+
+            SimpleColor rightColorForTestPoint = testPoint.rightColor;
+
+            printIsColorRight(isColorRight(colorForTestPoint, rightColorForTestPoint),
+                    rightColorForTestPoint);
+        }
+    }
+
+    static void printIsColorRight(boolean isColorRight, SimpleColor rightColor)
+    {
+        if (isColorRight)
+        {
+            System.out.println(" IS RIGHT");
+        }
+        else
+        {
+            System.out.println(" IS WRONG, MUST BE " + rightColor);
+        }
+    }
+
+    static boolean isColorRight(SimpleColor testColor, SimpleColor rightColor)
+    {
+        return (testColor == rightColor);
+    }
+
+    static void printColorForPoint (Point point, SimpleColor areaColor)
+    {
+        System.out.printf("(%6.3f ; %6.3f) -> %s", point.getX(), point.getY(), areaColor);
+    }
+
+    static double readCoordinate(char coordinateName)
+    {
+        System.out.printf("Input %c: ", coordinateName);
         Scanner sc = new Scanner(System.in);
-
-        System.out.print("Input X: ");
-        double x = sc.nextDouble();
-        if ((x < -10) || (x > 10))
-        {
-            System.out.println("-10 < x < 10");
-            System.exit(1);
-        }
-
-        System.out.print("Input Y: ");
-        double y = sc.nextDouble();
-        if ((y < -10) || (y > 10))
-        {
-            System.out.println("-10 < y < 10");
-            System.exit(1);
-        }
-
-        printColorForPoint(x, y);
-    }
-
-    static double examplesX(int i)
-    {
-        double [] xExamples = {0, 8, 3, 4, 6, -1, -3, -1.5 ,0, -3, -9};
-        return xExamples[i];
-    }
-
-    static double examplesY(int i)
-    {
-        double [] yExamples = {0, 1, 3, 6, 3, 1, -1, 3.5 ,5, 2, -9};
-        return yExamples[i];
-    }
-
-    public static void printColorForPoint (double x, double y)
-    {
-        System.out.printf("(%.3f ; %.3f) -> %s \n", x, y, getColor(x, y));
-    }
-
-    public static SimpleColor getColor (double x, double y)
-    {
-        if (isColorWhite(x, y)) return SimpleColor.WHITE;
-        return SimpleColor.BLUE;
-    }
-
-    public static boolean isColorWhite (double x, double y)
-    {
-        return y >= (0.5 * (x + 3) * (x + 3) - 3) && (y <= (x + 3) * (x + 3))
-                && ((x >= -2) && (x <= 6) && (y >= -5) && (y <= 4))
-                || (x >= 2) && (x <= 7) && (y >= 2) && (y <= 7) && x >= (0.125 * (y + 1) * (y + 1) + 3);
-    }
-
-    public static boolean isColorGray (double x, double y)
-    {
-        return true;
-    }
-
-    public static boolean isColorOrange (double x, double y)
-    {
-        return true;
-    }
-
-    public static boolean isColorYellow (double x, double y)
-    {
-        return true;
-    }
-
-    public static boolean isColorGreen (double x, double y)
-    {
-        return true;
-    }
-
-    public static boolean isColorBlue (double x, double y)
-    {
-        return true;
+        return sc.nextDouble();
     }
 }
