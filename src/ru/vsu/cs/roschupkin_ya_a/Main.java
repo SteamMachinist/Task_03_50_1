@@ -53,11 +53,11 @@ public class Main {
     {
         for(TestPoints testPoint : TestPoints.values())
         {
-            SimpleColor colorForTestPoint = picture.getColor(testPoint.point);
+            SimpleColor colorForTestPoint = picture.getColor(testPoint.getPoint());
 
-            printColorForPoint(testPoint.point, colorForTestPoint);
+            printColorForPoint(testPoint.getPoint(), colorForTestPoint);
 
-            SimpleColor rightColorForTestPoint = testPoint.rightColor;
+            SimpleColor rightColorForTestPoint = testPoint.getRightColor();
 
             printIsColorRight(isColorRight(colorForTestPoint, rightColorForTestPoint),
                     rightColorForTestPoint);

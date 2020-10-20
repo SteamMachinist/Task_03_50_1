@@ -31,6 +31,6 @@ public enum TestPoints
 
     public SimpleColor getRightColor()
     {
-        return getRightColor();
+        return rightColor;
     }
 }
