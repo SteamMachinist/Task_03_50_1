@@ -83,7 +83,7 @@ public class Main {
 
     static void printColorForPoint (Point point, SimpleColor areaColor)
     {
-        System.out.printf("(%6.3f ; %6.3f) -> %s", point.getX(), point.getY(), areaColor);
+        System.out.printf("(%6.3f ; %6.3f) -> %6s", point.getX(), point.getY(), areaColor);
     }
 
     static double readCoordinate(char coordinateName)
