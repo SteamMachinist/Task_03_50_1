@@ -43,24 +43,25 @@ public class Main {
                     HORIZONTAL_PARABOLA_QUADRATIC_COEFFICIENT, HORIZONTAL_PARABOLA_TYPE)
         );
 
-        runTests(picture);
+        runTests(picture, new TestPoints());
 
         Point point = new Point(readCoordinate('X'), readCoordinate('Y'));
         printColorForPoint(point, picture.getColor(point));
     }
 
-    static void runTests(Picture picture)
+    static void runTests(Picture picture, TestPoints testPoints)
     {
-        for(TestPoints testPoint : TestPoints.values())
+        for(int testPointOrdinal = 0; testPointOrdinal < testPoints.testPoints.length; testPointOrdinal++)
         {
-            SimpleColor colorForTestPoint = picture.getColor(testPoint.getPoint());
+            Point testPoint = testPoints.getPoint(testPointOrdinal);
 
-            printColorForPoint(testPoint.getPoint(), colorForTestPoint);
+            SimpleColor colorForPoint = picture.getColor(testPoint);
 
-            SimpleColor rightColorForTestPoint = testPoint.getRightColor();
+            printColorForPoint(testPoint, colorForPoint);
 
-            printIsColorRight(isColorRight(colorForTestPoint, rightColorForTestPoint),
-                    rightColorForTestPoint);
+            SimpleColor rightColorForPoint = testPoints.getRightColor(testPointOrdinal);
+
+            printIsColorRight(isColorRight(colorForPoint, rightColorForPoint), rightColorForPoint);
         }
     }
 

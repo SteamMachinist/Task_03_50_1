@@ -1,36 +1,47 @@
 package ru.vsu.cs.roschupkin_ya_a;
 
-public enum TestPoints
+public class TestPoints
 {
-    pointGray(new Point(0, 0), SimpleColor.GRAY),
-    pointOrange1(new Point(8, 1), SimpleColor.ORANGE),
-    pointYellow1(new Point(3, 3), SimpleColor.YELLOW),
-    pointBlue1(new Point(4, 6), SimpleColor.BLUE),
-    pointWhite1(new Point(6, 3), SimpleColor.WHITE),
-    pointWhite2(new Point(-1, 1), SimpleColor.WHITE),
-    pointBlue2(new Point(-3, -1), SimpleColor.BLUE),
-    pointGreen1(new Point(-1.5, 3.5), SimpleColor.GREEN),
-    pointYellow2(new Point(0, 5), SimpleColor.YELLOW),
-    pointOrange2(new Point(-3, 2), SimpleColor.ORANGE),
-    pointGreen2(new Point(-9, -9), SimpleColor.GREEN);
+    public TestPoints()
+    {}
 
-
-    TestPoints(Point point, SimpleColor rightColor)
+    Point[] testPoints =
     {
-        this.point = point;
-        this.rightColor = rightColor;
+        new Point(0, 0),
+        new Point(8, 1),
+        new Point(3, 3),
+        new Point(4, 6),
+        new Point(6, 3),
+        new Point(-1, 1),
+        new Point(-3, -1),
+        new Point(-1.5, 3.5),
+        new Point(0, 5),
+        new Point(-3, 2),
+        new Point(-9, -9)
+    };
+
+    SimpleColor[] rightColors =
+    {
+        SimpleColor.GRAY,
+        SimpleColor.ORANGE,
+        SimpleColor.YELLOW,
+        SimpleColor.BLUE,
+        SimpleColor.WHITE,
+        SimpleColor.WHITE,
+        SimpleColor.BLUE,
+        SimpleColor.GREEN,
+        SimpleColor.YELLOW,
+        SimpleColor.ORANGE,
+        SimpleColor.GREEN
+    };
+
+    Point getPoint(int testPointNumber)
+    {
+        return testPoints[testPointNumber];
     }
 
-    final Point point;
-    final SimpleColor rightColor;
-
-    public Point getPoint()
+    SimpleColor getRightColor(int testPointNumber)
     {
-        return point;
-    }
-
-    public SimpleColor getRightColor()
-    {
-        return rightColor;
+        return rightColors[testPointNumber];
     }
 }
